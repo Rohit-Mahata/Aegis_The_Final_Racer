@@ -69,6 +69,10 @@ Desktop.ini
 EasyRoads3Dv3/
 RoadArchitect/
 
+# Third-party downloaded Asset Store packages (can be downloaded directly from Unity Asset Store)
+/[Aa]ssets/Flooded_Grounds/
+/[Aa]ssets/Flooded_Grounds.meta
+
 # Secrets and private config
 *.env
 *.env.*
