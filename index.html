@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090a0d" />
+    <title>Aegis — The Final Racer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <button class="brand" id="brandButton" aria-label="Return to story map">
+          <span class="brand-mark">A</span>
+          <span><strong>AEGIS</strong><small>THE FINAL RACER</small></span>
+        </button>
+        <div class="topbar-stats">
+          <div class="stat"><span>CREDITS</span><strong id="credits">$2,400</strong></div>
+          <div class="stat"><span>CLUES</span><strong id="clueCount">0 / 3</strong></div>
+        </div>
+      </header>
+
+      <section id="mapScreen" class="screen map-screen active" aria-label="Story map">
+        <div class="map-copy">
+          <p class="eyebrow">CHAPTER ONE</p>
+          <h1>THE NIGHT<br /><em>KNOWS YOUR NAME</em></h1>
+          <p class="story-lead">Every mile is a lead. Every wager has a cost. Find the truth before dawn—and before Mara is gone.</p>
+          <button class="primary-button" id="continueButton">CONTINUE STORY <span>→</span></button>
+        </div>
+        <div class="route-map" aria-label="Race locations">
+          <div class="route-line"></div>
+          <button class="location active" data-location="0" style="--x: 12%; --y: 72%">
+            <span class="pin"><i></i></span><span class="location-card"><small>01</small><strong>BLACKTOP</strong></span>
+          </button>
+          <button class="location" data-location="1" style="--x: 43%; --y: 43%">
+            <span class="pin"><i></i></span><span class="location-card"><small>02</small><strong>GLASSWORKS</strong></span>
+          </button>
+          <button class="location" data-location="2" style="--x: 69%; --y: 68%">
+            <span class="pin"><i></i></span><span class="location-card"><small>03</small><strong>RED MESA</strong></span>
+          </button>
+          <button class="location locked" data-location="3" style="--x: 88%; --y: 25%">
+            <span class="pin"><i></i></span><span class="location-card"><small>04</small><strong>THE FINAL</strong></span>
+          </button>
+        </div>
+      </section>
+
+      <section id="missionScreen" class="screen mission-screen" aria-label="Mission briefing">
+        <aside class="mission-art">
+          <div class="road-lines"></div>
+          <div class="car-silhouette"><span></span></div>
+        </aside>
+        <article class="mission-panel">
+          <button class="back-button" id="backButton">← BACK</button>
+          <p class="eyebrow" id="missionChapter">RACE 01 / BLACKTOP DISTRICT</p>
+          <h2 id="missionTitle">MIDNIGHT<br />TRANSFER</h2>
+          <p id="missionDescription" class="mission-description"></p>
+          <div class="mission-rewards">
+            <div><span>WIN PRIZE</span><strong id="prize">$1,200</strong></div>
+            <div><span>CLUE</span><strong id="clueReward">Courier list</strong></div>
+          </div>
+          <div class="bet-row">
+            <span>YOUR WAGER</span>
+            <div class="stepper">
+              <button id="decreaseBet" aria-label="Decrease wager">−</button>
+              <strong id="betAmount">$400</strong>
+              <button id="increaseBet" aria-label="Increase wager">+</button>
+            </div>
+          </div>
+          <button class="primary-button" id="startRaceButton">START RACE <span>→</span></button>
+        </article>
+      </section>
+
+      <section id="raceScreen" class="screen race-screen" aria-label="Race">
+        <canvas id="raceCanvas" width="1280" height="720"></canvas>
+        <div class="race-hud">
+          <div class="position"><strong id="position">3</strong><span>/6</span></div>
+          <div class="race-objective">
+            <span id="objectiveLabel">DISTANCE</span>
+            <strong id="distanceValue">0%</strong>
+            <div class="progress"><i id="raceProgress"></i></div>
+          </div>
+          <div class="drift-meter"><span>DRIFT</span><div><i id="driftFill"></i></div></div>
+        </div>
+        <div class="countdown" id="countdown">3</div>
+        <div class="race-result" id="raceResult" aria-live="polite">
+          <p class="eyebrow" id="resultEyebrow">FINISH</p>
+          <h2 id="resultTitle">VICTORY</h2>
+          <p id="resultText"></p>
+          <button class="primary-button" id="continueResultButton">CONTINUE <span>→</span></button>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+    <script src="game-state.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

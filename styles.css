@@ -1,0 +1,176 @@
+:root {
+  --ink: #090a0d;
+  --paper: #e9e5dc;
+  --orange: #ed4b2b;
+  --muted: #99999a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--paper);
+  background: #08090b;
+  font-family: "Manrope", sans-serif;
+}
+
+button { font: inherit; cursor: pointer; }
+.game-shell { min-height: 100vh; position: relative; }
+.topbar {
+  position: absolute;
+  z-index: 20;
+  top: 0; left: 0; right: 0;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4.5vw;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  border: 0; background: none; color: white; text-align: left;
+}
+.brand-mark {
+  display: grid; place-items: center;
+  width: 39px; height: 39px;
+  border: 2px solid white;
+  font: 800 24px "Barlow Condensed";
+  transform: skew(-8deg);
+}
+.brand strong { display: block; font: 800 21px "Barlow Condensed"; letter-spacing: 5px; line-height: 1; }
+.brand small { display: block; margin-top: 5px; color: #aaa; font: 500 8px "DM Mono"; letter-spacing: 2.5px; }
+.topbar-stats { display: flex; height: 88px; }
+.stat { display: flex; flex-direction: column; justify-content: center; min-width: 130px; padding-left: 25px; border-left: 1px solid rgba(255,255,255,.09); }
+.stat span { color: #777; font: 500 9px "DM Mono"; letter-spacing: 2px; }
+.stat strong { margin-top: 5px; font: 600 17px "DM Mono"; }
+
+.screen { display: none; position: absolute; inset: 0; min-height: 100vh; }
+.screen.active { display: flex; }
+.map-screen {
+  background:
+    linear-gradient(90deg, rgba(8,9,11,.96) 0%, rgba(8,9,11,.68) 45%, rgba(8,9,11,.15) 100%),
+    radial-gradient(circle at 75% 58%, rgba(205,77,44,.25), transparent 20%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='700'%3E%3Crect width='1200' height='700' fill='%232a2d30'/%3E%3Cpath d='M0 580L120 520l130 40 130-110 170 20 170-140 170 40 170-150 140 20v420H0z' fill='%23403e39' opacity='.65'/%3E%3Cpath d='M0 620L220 560l170 50 190-90 250 40 370-130v270H0z' fill='%23171a1b'/%3E%3C/svg%3E") center/cover;
+}
+.map-copy { position: relative; z-index: 3; width: 43%; margin: 170px 0 0 8%; }
+.eyebrow { color: var(--orange); font: 500 10px "DM Mono"; letter-spacing: 3px; }
+.map-copy h1, .mission-panel h2, .race-result h2 {
+  margin: 16px 0 24px;
+  font: 800 clamp(58px, 7vw, 105px)/.78 "Barlow Condensed";
+  letter-spacing: -3px;
+  text-transform: uppercase;
+}
+.map-copy h1 em { color: transparent; -webkit-text-stroke: 1.5px rgba(233,229,220,.75); font-style: normal; }
+.story-lead { max-width: 460px; color: #bbb; font-size: 13px; line-height: 1.8; }
+.primary-button {
+  min-width: 210px; height: 54px;
+  border: 0; background: var(--orange); color: white;
+  font: 700 12px "DM Mono"; letter-spacing: 1.5px;
+  box-shadow: 0 12px 40px rgba(237,75,43,.15);
+}
+.primary-button span { float: right; margin-left: 35px; font-size: 18px; }
+.map-copy .primary-button { margin-top: 28px; }
+.route-map { position: absolute; inset: 88px 0 0 40%; }
+.route-line {
+  position: absolute; left: 13%; top: 70%;
+  width: 75%; height: 40%;
+  border-top: 1px dashed rgba(255,255,255,.25);
+  transform: rotate(-18deg);
+  transform-origin: left;
+}
+.location {
+  position: absolute; left: var(--x); top: var(--y);
+  width: 80px; height: 80px;
+  border: 0; background: none; color: white;
+  transform: translate(-50%, -50%);
+}
+.pin {
+  position: absolute; left: 50%; top: 50%;
+  width: 38px; height: 38px;
+  border: 1px solid rgba(255,255,255,.5); border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.pin i { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; border-radius: 50%; background: white; transform: translate(-50%,-50%); }
+.location.active .pin { border-color: var(--orange); box-shadow: 0 0 0 8px rgba(237,75,43,.12); }
+.location.active .pin i { background: var(--orange); }
+.location-card {
+  position: absolute; left: 54px; top: 7px; width: 150px;
+  text-align: left; opacity: 0; transition: .2s;
+}
+.location-card small { display: block; color: #aaa; font: 500 8px "DM Mono"; }
+.location-card strong { display: block; margin-top: 4px; font: 700 16px "Barlow Condensed"; letter-spacing: 2px; }
+.location:hover .location-card, .location.active .location-card { opacity: 1; }
+.location.locked { opacity: .45; }
+.location.locked .pin i { background: #777; }
+
+.mission-screen { background: #111315; }
+.mission-art { position: relative; width: 58%; overflow: hidden; background: linear-gradient(155deg, #242a2e 0%, #17191a 55%, #0d0e10 100%); }
+.mission-art::after { content:""; position:absolute; inset:0; background: linear-gradient(90deg,transparent 55%,rgba(17,19,21,.85)); }
+.road-lines { position:absolute; width:130%; height:100%; left:-15%; top:0; background: repeating-linear-gradient(165deg, transparent 0 120px, rgba(255,255,255,.025) 121px 123px); transform:skewX(-10deg); }
+.car-silhouette { position:absolute; z-index:2; left:48%; bottom:9%; width:430px; height:150px; border-radius:70% 35% 10% 10%; background:#08090a; transform:skewX(-12deg); box-shadow:-30px 20px 45px #050505; }
+.car-silhouette::before { content:""; position:absolute; right:62px; top:-62px; width:220px; height:75px; border-radius:100% 30% 0 0; background:#090a0b; transform:skewX(28deg); }
+.car-silhouette::after { content:""; position:absolute; right:-22px; bottom:15px; width:74px; height:16px; background:var(--orange); box-shadow:-330px 0 35px rgba(237,75,43,.25); }
+.car-silhouette span, .car-silhouette span::after { position:absolute; z-index:3; width:78px; height:78px; border-radius:50%; background:#111; border:10px solid #050505; bottom:-38px; left:62px; content:""; }
+.car-silhouette span::after { left:220px; bottom:-10px; }
+.mission-panel { width:42%; padding: 125px 7vw 50px 5vw; position: relative; }
+.back-button { position:absolute; top:105px; right:7vw; border:0; background:none; color:#777; font:500 9px "DM Mono"; letter-spacing:1px; }
+.mission-panel h2 { margin:20px 0; font-size:clamp(58px,6vw,84px); }
+.mission-description { max-width:430px; min-height:85px; color:#aaa; font-size:13px; line-height:1.8; }
+.mission-rewards { display:flex; gap:70px; margin:25px 0; padding:18px 0; border-top:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08); }
+.mission-rewards div { display:flex; flex-direction:column; }
+.mission-rewards span, .bet-row > span { color:#777; font:500 8px "DM Mono"; letter-spacing:2px; }
+.mission-rewards strong { margin-top:7px; font:600 16px "DM Mono"; }
+.bet-row { display:flex; align-items:center; justify-content:space-between; width:430px; max-width:100%; margin-bottom:22px; }
+.stepper { display:flex; align-items:center; gap:18px; }
+.stepper button { width:30px; height:30px; border:1px solid #555; background:transparent; color:white; }
+.stepper button:disabled { opacity:.3; }
+.stepper strong { min-width:70px; text-align:center; font:600 14px "DM Mono"; }
+
+.race-screen { background:#111; }
+#raceCanvas { width:100%; height:100%; object-fit:cover; }
+.race-hud { position:absolute; z-index:3; top:110px; left:5%; right:5%; display:flex; justify-content:space-between; align-items:flex-start; }
+.position strong { font:800 56px "Barlow Condensed"; }
+.position span { color:#aaa; font:500 16px "DM Mono"; }
+.race-objective { width:260px; text-align:center; }
+.race-objective span { display:block; color:#aaa; font:500 8px "DM Mono"; letter-spacing:2px; }
+.race-objective strong { display:block; margin:5px 0; font:700 20px "DM Mono"; }
+.progress { height:3px; background:rgba(255,255,255,.25); }
+.progress i { display:block; height:100%; width:0; background:var(--orange); transition:width .1s linear; }
+.drift-meter { width:150px; }
+.drift-meter span { display:block; margin-bottom:7px; color:#aaa; font:500 8px "DM Mono"; letter-spacing:2px; }
+.drift-meter div { height:5px; background:rgba(255,255,255,.2); }
+.drift-meter i { display:block; height:100%; width:0; background:var(--orange); }
+.countdown { position:absolute; z-index:4; inset:88px 0 0; display:grid; place-items:center; background:rgba(7,8,9,.18); font:800 160px "Barlow Condensed"; text-shadow:0 10px 40px #000; }
+.race-result { display:none; position:absolute; z-index:5; left:50%; top:50%; width:min(480px,80vw); padding:45px; text-align:center; background:rgba(9,10,12,.94); border-top:3px solid var(--orange); transform:translate(-50%,-50%); box-shadow:0 30px 80px #000; }
+.race-result.show { display:block; }
+.race-result h2 { margin:12px 0; font-size:72px; line-height:1; }
+.race-result p:not(.eyebrow) { color:#bbb; font-size:13px; line-height:1.7; }
+.race-result .primary-button { margin-top:15px; }
+.toast { position:fixed; z-index:50; left:50%; bottom:30px; padding:14px 20px; background:#e9e5dc; color:#111; font:600 11px "DM Mono"; transform:translate(-50%,100px); transition:.3s; }
+.toast.show { transform:translate(-50%,0); }
+
+@media (max-width: 800px) {
+  .topbar { height:72px; padding:0 20px; }
+  .topbar-stats, .stat { height:72px; }
+  .stat { min-width:86px; padding-left:12px; }
+  .brand small { display:none; }
+  .map-copy { width:84%; margin:125px 8% 0; }
+  .map-copy h1 { font-size:58px; }
+  .route-map { inset:48% 0 0 8%; }
+  .mission-screen { display:none; }
+  .mission-screen.active { display:block; }
+  .mission-art { position:absolute; inset:72px 0 55%; width:100%; height:45%; }
+  .car-silhouette { width:260px; height:100px; left:35%; bottom:5%; }
+  .mission-panel { position:absolute; bottom:0; width:100%; height:55%; padding:30px 8%; overflow:auto; }
+  .back-button { top:-1px; right:8%; }
+  .mission-panel h2 { font-size:48px; }
+  .mission-description { min-height:0; }
+  .mission-rewards { margin:12px 0; }
+  .race-hud { top:85px; }
+  .race-objective { width:170px; }
+  .drift-meter { width:100px; }
+}
